@@ -1,12 +1,12 @@
-# Veille GIRO
+# EnkiFlux
 
 Site statique : `index.html` (la page) + `data.json` (les articles). Seul `data.json` change chaque jour.
 
 ## Mise en ligne (GitHub Pages)
-1. Sur GitHub, crée un dépôt (public, pour que Pages soit gratuit), par exemple `veille`.
+1. Sur GitHub, crée un dépôt (public, pour que Pages soit gratuit), par exemple `enkiflux`.
 2. Dépose les fichiers `index.html`, `data.json`, `.nojekyll` et `README.md` à la racine du dépôt (bouton « Add file » > « Upload files »).
 3. Dépôt > Settings > Pages > Source : « Deploy from a branch », branche `main`, dossier `/ (root)`. Enregistre.
-4. Après une minute, le site est en ligne sur `https://TON-COMPTE.github.io/veille/`.
+4. Après une minute, le site est en ligne sur `https://TON-COMPTE.github.io/NOM-DU-DEPOT/`.
 
 ## Nom de domaine (optionnel)
 1. Achète un domaine (Cloudflare, Namecheap, registraire .ca accrédité CIRA).
