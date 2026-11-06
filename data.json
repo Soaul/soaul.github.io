@@ -1,0 +1,442 @@
+{
+  "updated": "2026-11-06",
+  "topics": [
+    {
+      "id": "securite",
+      "label": "Sécurité",
+      "color": "--sec",
+      "count": "Vulnérabilités, incidents, correctifs",
+      "sources": [
+        {
+          "t": "CCCS alertes",
+          "u": "https://www.cyber.gc.ca/fr/alertes-avis"
+        },
+        {
+          "t": "CERT-FR",
+          "u": "https://www.cert.ssi.gouv.fr/"
+        },
+        {
+          "t": "CISA KEV",
+          "u": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog"
+        },
+        {
+          "t": "Microsoft MSRC",
+          "u": "https://msrc.microsoft.com/update-guide"
+        },
+        {
+          "t": "BleepingComputer",
+          "u": "https://www.bleepingcomputer.com/"
+        },
+        {
+          "t": "The Hacker News",
+          "u": "https://thehackernews.com/"
+        },
+        {
+          "t": "SecurityWeek",
+          "u": "https://www.securityweek.com/"
+        },
+        {
+          "t": "Krebs on Security",
+          "u": "https://krebsonsecurity.com/"
+        }
+      ],
+      "items": [
+        {
+          "t": "OpenSSH publie un correctif d’urgence : de longs mots de passe contournent l’authentification SSH sur Alpine Linux",
+          "u": "https://thehackernews.com/2026/11/openssh-issues-emergency-fix-for-flaw.html",
+          "s": "The Hacker News",
+          "d": "2026-11",
+          "k": "Urgent",
+          "x": "Concerne les images Alpine, très courantes en conteneurs.",
+          "top": 1
+        },
+        {
+          "t": "Des NAS Synology visés par des rançongiciels exploitant une faille DSM déjà corrigée",
+          "u": "https://thehackernews.com/2026/11/synology-nas-devices-targeted-in.html",
+          "s": "The Hacker News",
+          "d": "2026-11",
+          "k": "Urgent",
+          "x": "Appliquer le correctif DSM : les attaques visent les systèmes non mis à jour.",
+          "top": 2
+        },
+        {
+          "t": "Faille APT sur Debian et Ubuntu : un intercepteur peut substituer des paquets vérifiés et exécuter du code root",
+          "u": "https://thehackernews.com/2026/11/debian-and-ubuntu-apt-flaw-lets-mitm.html",
+          "s": "The Hacker News",
+          "d": "2026-11",
+          "k": "Urgent",
+          "x": "Impact sur les chaînes de build et les serveurs Linux, à traiter avec la mise à jour des paquets apt.",
+          "une": true
+        },
+        {
+          "t": "Des pirates exploitent une faille Apple corrigée pour diffuser un voleur d’informations, selon la CISA",
+          "u": "https://thehackernews.com/2026/11/hackers-exploit-patched-apple-flaw-to.html",
+          "s": "The Hacker News",
+          "d": "2026-11",
+          "k": "Menace",
+          "x": "Parc Apple de l’entreprise à mettre à jour."
+        },
+        {
+          "t": "SonicWall ne corrigera pas des failles de GMS en fin de vie qui exposent des fichiers",
+          "u": "https://thehackernews.com/2026/11/sonicwall-wont-patch-eol-gms-flaws-that.html",
+          "s": "The Hacker News",
+          "d": "2026-11",
+          "k": "Fin de vie",
+          "x": "Planifier le remplacement si GMS est en service."
+        },
+        {
+          "t": "Correctif pour une exécution de code à distance dans Microsoft Paint, mais Windows Update ne le distribue pas",
+          "u": "https://thehackernews.com/2026/11/microsoft-paint-rce-fix-now-available.html",
+          "s": "The Hacker News",
+          "d": "2026-11",
+          "k": "Correctif",
+          "x": "Le correctif doit être déployé manuellement."
+        },
+        {
+          "t": "ThreatsDay : RCE Apache OFBiz, fuite chez DreamHost, détournements de sites DeFi et 17 autres sujets",
+          "u": "https://thehackernews.com/2026/11/threatsday-apache-ofbiz-rce-dreamhost.html",
+          "s": "The Hacker News",
+          "d": "2026-11",
+          "k": "Synthèse",
+          "x": "Résumé hebdomadaire des menaces."
+        },
+        {
+          "t": "Un pipeline IA d’OpenAI génère 948 exploits d’élévation de privilèges Linux en 30 heures",
+          "u": "https://thehackernews.com/2026/11/openai-ai-pipeline-generates-948-linux.html",
+          "s": "The Hacker News",
+          "d": "2026-11",
+          "k": "Analyse",
+          "x": "La découverte de failles par IA accélère le rythme des correctifs."
+        },
+        {
+          "t": "Microsoft corrige un record de 1 413 failles, dont un bogue Windows Shell exploité",
+          "u": "https://thehackernews.com/2026/10/microsoft-patches-record-1413-flaws.html",
+          "s": "The Hacker News",
+          "d": "2026-10",
+          "k": "Correctifs",
+          "x": "Patch Tuesday d’octobre, à valider avant déploiement."
+        }
+      ]
+    },
+    {
+      "id": "cloud",
+      "label": "Cloud",
+      "color": "--cloud",
+      "count": "AWS, Azure, Google Cloud, cloud native",
+      "sources": [
+        {
+          "t": "AWS What’s New",
+          "u": "https://aws.amazon.com/new/"
+        },
+        {
+          "t": "AWS News Blog",
+          "u": "https://aws.amazon.com/blogs/aws/"
+        },
+        {
+          "t": "Azure Blog",
+          "u": "https://azure.microsoft.com/en-us/blog/"
+        },
+        {
+          "t": "Google Cloud, notes de version",
+          "u": "https://docs.cloud.google.com/release-notes"
+        },
+        {
+          "t": "CNCF",
+          "u": "https://www.cncf.io/blog/"
+        },
+        {
+          "t": "InfoQ Cloud",
+          "u": "https://www.infoq.com/cloud-computing/"
+        },
+        {
+          "t": "Last Week in AWS",
+          "u": "https://www.lastweekinaws.com/"
+        }
+      ],
+      "items": [
+        {
+          "t": "AWS Weekly Roundup : GPT-6.1 Terra sur Bedrock, Step Functions comme outils d’agents",
+          "u": "https://aws.amazon.com/blogs/aws/aws-weekly-roundup-gpt-6-1-terra-on-bedrock-step-functions-as-agent-tools-and-more-november-2-2026/",
+          "s": "AWS News Blog",
+          "d": "2026-11-02",
+          "k": "Synthèse",
+          "x": "Toutes les annonces AWS de la semaine en une page.",
+          "top": 4
+        },
+        {
+          "t": "AWS livre Continuum pour les vulnérabilités de code (disponibilité générale)",
+          "u": "https://infoq.com/news/2026/11/aws-continuum-ga",
+          "s": "InfoQ",
+          "d": "2026-11",
+          "k": "Annonce",
+          "x": "Outil AWS d’analyse et de correction des failles de code, désormais disponible pour tous.",
+          "une": true
+        },
+        {
+          "t": "Amazon ECS Gateway arrive, avec noms d’hôte générés et sans domaine personnalisé",
+          "u": "https://infoq.com/news/2026/11/introducing-amazon-ecs-gateway",
+          "s": "InfoQ",
+          "d": "2026-11",
+          "k": "Annonce",
+          "x": "Limite à connaître avant de l’adopter."
+        },
+        {
+          "t": "AWS DataSync en mode amélioré prend en charge OIDC pour Google Cloud et Microsoft Azure",
+          "u": "https://aws.amazon.com/about-aws/whats-new/2026/11/datasync-enhanced-oidc-google-azure/",
+          "s": "AWS What’s New",
+          "d": "2026-11",
+          "k": "Annonce",
+          "x": "Transferts multicloud sans clés statiques."
+        },
+        {
+          "t": "Amazon WorkSpaces pour agents IA prend en charge les bureaux cloud Linux et Windows 11",
+          "u": "https://aws.amazon.com/about-aws/whats-new/2026/11/workspaces-ai-agents-linux-windows-11/",
+          "s": "AWS What’s New",
+          "d": "2026-11",
+          "k": "Annonce",
+          "x": "Postes virtuels destinés aux agents IA."
+        },
+        {
+          "t": "KubeCon NA 2026 : recommandations du comité des utilisateurs finaux",
+          "u": "https://www.cncf.io/blog/2026/10/29/kubecon-cloudnativecon-na-2026-end-user-tab-recommendations-and-tips/",
+          "s": "CNCF",
+          "d": "2026-10-29",
+          "k": "Événement",
+          "x": "Sélection de sessions pour les équipes qui exploitent Kubernetes."
+        }
+      ]
+    },
+    {
+      "id": "ia",
+      "label": "IA",
+      "color": "--ai",
+      "count": "Agents, gouvernance, économie de l’IA",
+      "sources": [
+        {
+          "t": "Anthropic",
+          "u": "https://www.anthropic.com/news"
+        },
+        {
+          "t": "OpenAI",
+          "u": "https://openai.com/news/"
+        },
+        {
+          "t": "Google DeepMind",
+          "u": "https://deepmind.google/discover/blog/"
+        },
+        {
+          "t": "Hugging Face",
+          "u": "https://huggingface.co/blog"
+        },
+        {
+          "t": "MIT Technology Review",
+          "u": "https://www.technologyreview.com/topic/artificial-intelligence/"
+        },
+        {
+          "t": "OWASP GenAI",
+          "u": "https://genai.owasp.org/"
+        }
+      ],
+      "items": [
+        {
+          "t": "Sécuriser l’entreprise agentique grâce à la traçabilité des données",
+          "u": "https://www.technologyreview.com/2026/11/04/1147596/securing-the-agentic-enterprise-with-data-lineage/",
+          "s": "MIT Technology Review",
+          "d": "2026-11-04",
+          "k": "Analyse",
+          "x": "Gouvernance des données pour les agents IA.",
+          "top": 5
+        },
+        {
+          "t": "Le web agentique est arrivé",
+          "u": "https://www.technologyreview.com/2026/11/02/1147846/the-agentic-web-is-here/",
+          "s": "MIT Technology Review",
+          "d": "2026-11-02",
+          "k": "Analyse",
+          "x": "Impact des agents qui naviguent et achètent à notre place, et de ce que cela change pour les applications web.",
+          "une": true
+        },
+        {
+          "t": "Productivité et IA : la Banque d’Angleterre jette un froid",
+          "u": "https://www.theregister.com/ai-and-ml/2026/11/06/bank-of-england-pours-cold-water-on-ai-productivity-boom/5308059",
+          "s": "The Register",
+          "d": "2026-11-06",
+          "k": "Économie",
+          "x": "Utile pour cadrer les attentes de retour sur investissement."
+        },
+        {
+          "t": "Plus besoin de réentraîner : une IA peut modifier les poids d’une autre IA",
+          "u": "https://www.theregister.com/ai-and-ml/2026/11/03/forget-retraining-ai-can-now-tweak-another-ais-weights/5307105",
+          "s": "The Register",
+          "d": "2026-11-03",
+          "k": "Recherche",
+          "x": "Change la façon d’adapter les modèles."
+        },
+        {
+          "t": "Contrôler les agents IA et les tests de loyauté « Super Intelligence »",
+          "u": "https://www.technologyreview.com/2026/11/03/1147940/the-download-controlling-ai-agents-trump-super-intelligence/",
+          "s": "MIT Technology Review",
+          "d": "2026-11-03",
+          "k": "Synthèse",
+          "x": "Résumé quotidien des sujets IA."
+        },
+        {
+          "t": "La « théorie des jeux inversée » pourrait garder les agents IA sous contrôle",
+          "u": "https://www.technologyreview.com/2026/11/03/1147934/reverse-game-theory-mechanism-design-ai-alignment/",
+          "s": "MIT Technology Review",
+          "d": "2026-11-03",
+          "k": "Recherche",
+          "x": "Conception de mécanismes pour l’alignement des agents."
+        },
+        {
+          "t": "Arrêtez de compter les jetons, comptez ce qui est livré",
+          "u": "https://www.technologyreview.com/2026/11/02/1147702/stop-counting-tokens-start-counting-what-ships/",
+          "s": "MIT Technology Review",
+          "d": "2026-11-02",
+          "k": "Analyse",
+          "x": "Mesurer la valeur réelle de l’IA en entreprise."
+        }
+      ]
+    },
+    {
+      "id": "ti",
+      "label": "TI",
+      "color": "--it",
+      "count": "Infrastructure, centres de données, exploitation",
+      "sources": [
+        {
+          "t": "The Register",
+          "u": "https://www.theregister.com/"
+        },
+        {
+          "t": "The New Stack",
+          "u": "https://thenewstack.io/"
+        },
+        {
+          "t": "InfoQ",
+          "u": "https://www.infoq.com/"
+        },
+        {
+          "t": "Ars Technica",
+          "u": "https://arstechnica.com/information-technology/"
+        },
+        {
+          "t": "LeMagIT",
+          "u": "https://www.lemagit.fr/"
+        },
+        {
+          "t": "UITP",
+          "u": "https://www.uitp.org/news/"
+        },
+        {
+          "t": "GIRO",
+          "u": "https://www.giro.ca/"
+        }
+      ],
+      "items": [
+        {
+          "t": "Stop aux centres de données polluants : manifestations prévues partout en Europe pour un moratoire",
+          "u": "https://www.theregister.com/systems/2026/11/05/stop-dirty-datacenters-europe-wide-protests-planned-demanding-building-moratorium/5307790",
+          "s": "The Register",
+          "d": "2026-11-05",
+          "k": "Capacité",
+          "x": "Risque de contraintes sur l’hébergement en Europe.",
+          "top": 6
+        },
+        {
+          "t": "Le Texas, nouvel épicentre des centres de données IA : c’est peut-être fini",
+          "u": "https://www.technologyreview.com/2026/11/04/1148043/texas-was-the-new-epicenter-of-the-ai-data-center-buildout-that-might-be-kaput/",
+          "s": "MIT Technology Review",
+          "d": "2026-11-04",
+          "k": "Capacité",
+          "x": "Ralentissement du déploiement de capacité pour l’IA.",
+          "une": true
+        }
+      ]
+    },
+    {
+      "id": "finance",
+      "label": "Finance et politique",
+      "color": "--fin",
+      "count": "Investissements, lois, régulation, souveraineté",
+      "sources": [
+        {
+          "t": "Loi C-8 (cybersécurité), LEGISinfo",
+          "u": "https://www.parl.ca/LegisInfo/en/bill/45-1/C-8"
+        },
+        {
+          "t": "Commission d’accès à l’information (Loi 25)",
+          "u": "https://www.cai.gouv.qc.ca/"
+        },
+        {
+          "t": "Les Affaires, techno et IA",
+          "u": "https://www.lesaffaires.com/secteurs/techno-et-ia/"
+        },
+        {
+          "t": "Le Devoir, techno",
+          "u": "https://www.ledevoir.com/economie/techno"
+        },
+        {
+          "t": "BetaKit",
+          "u": "https://betakit.com/"
+        },
+        {
+          "t": "DatacenterDynamics",
+          "u": "https://www.datacenterdynamics.com/en/news/"
+        },
+        {
+          "t": "TechCrunch",
+          "u": "https://techcrunch.com/"
+        },
+        {
+          "t": "Politique de l’UE sur l’IA",
+          "u": "https://digital-strategy.ec.europa.eu/en/policies/european-approach-artificial-intelligence"
+        }
+      ],
+      "items": [
+        {
+          "t": "Des fissures apparaissent dans le boom des dépenses en IA",
+          "u": "https://techcrunch.com/2026/10/30/cracks-are-emerging-in-the-ai-spending-boom/",
+          "s": "TechCrunch",
+          "d": "2026-10-30",
+          "k": "Investissement",
+          "x": "Signal à suivre pour anticiper les prix et la capacité du cloud.",
+          "top": 3
+        },
+        {
+          "t": "Jassy : AWS vaudra 1 000 G$, mais il faut d’abord dépenser massivement",
+          "u": "https://techcrunch.com/2026/10/29/aws-will-be-a-1t-business-jassy-says-but-first-it-will-spend-big/",
+          "s": "TechCrunch",
+          "d": "2026-10-29",
+          "k": "Investissement",
+          "x": "Éclaire la trajectoire d’investissement d’AWS, donc ses prix et sa capacité à venir.",
+          "une": true
+        },
+        {
+          "t": "Aux États-Unis, les candidats aux élections de mi-mandat s’entendent sur un point : limiter les centres de données",
+          "u": "https://theregister.com/systems/2026/11/04/america-unites-on-one-issue-reining-in-datacenters/5307536",
+          "s": "The Register",
+          "d": "2026-11-04",
+          "k": "Politique",
+          "x": "Pression possible sur les coûts d’énergie et de capacité."
+        },
+        {
+          "t": "Souveraineté numérique : d’Hydro-Québec à Intelligence Québec",
+          "u": "https://www.lapresse.ca/dialogue/opinions/2026-10-28/souverainete-numerique/d-hydro-quebec-a-intelligence-quebec.php",
+          "s": "La Presse",
+          "d": "2026-10-28",
+          "k": "Souveraineté",
+          "x": "Débat québécois sur l’hébergement local des données et l’énergie."
+        },
+        {
+          "t": "DeepSeek banni de toutes les agences civiles fédérales américaines",
+          "u": "https://www.theregister.com/security/2026/10/20/deepseek-deep-sixed-at-all-us-federal-civilian-agencies/5304010",
+          "s": "The Register",
+          "d": "2026-10-20",
+          "k": "Réglementation",
+          "x": "Précédent pour l’encadrement des modèles étrangers en entreprise."
+        }
+      ]
+    }
+  ]
+}
