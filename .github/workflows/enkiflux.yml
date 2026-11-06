@@ -1,0 +1,66 @@
+name: EnkiFlux mise à jour
+
+on:
+  schedule:
+    # 13 h et 14 h UTC : l'une des deux correspond à 9 h à Montréal selon l'heure d'été.
+    - cron: "0 13 * * 1-5"
+    - cron: "0 14 * * 1-5"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: enkiflux
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Vérifier qu'il est 9 h à Montréal
+        id: gate
+        run: |
+          H=$(TZ=America/Toronto date +%H)
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ "$H" = "09" ]; then
+            echo "go=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "go=false" >> "$GITHUB_OUTPUT"
+            echo "Il n'est pas 9 h à Montréal (heure actuelle : $H h), on saute."
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.gate.outputs.go == 'true'
+
+      - uses: actions/setup-python@v5
+        if: steps.gate.outputs.go == 'true'
+        with:
+          python-version: "3.12"
+
+      - name: Collecter les articles
+        if: steps.gate.outputs.go == 'true'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_MODEL: ${{ vars.ANTHROPIC_MODEL }}
+        run: python scripts/update.py
+
+      - name: Publier data.json
+        if: steps.gate.outputs.go == 'true'
+        run: |
+          git config user.name "enkiflux-bot"
+          git config user.email "enkiflux-bot@users.noreply.github.com"
+          git add data.json
+          if git diff --cached --quiet; then
+            echo "Aucun changement."
+          else
+            git commit -m "Mise à jour quotidienne EnkiFlux $(TZ=America/Toronto date +%F)"
+            git push
+          fi
+
+      - name: Demander la republication de GitHub Pages
+        if: steps.gate.outputs.go == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X POST "repos/${{ github.repository }}/pages/builds" || true
