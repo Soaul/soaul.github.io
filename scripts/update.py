@@ -37,12 +37,12 @@ TOPICS = {
     "ia": {
         "label": "IA",
         "focus": "agents IA, modèles, gouvernance et sécurité de l'IA, coût et retour sur investissement de l'IA en entreprise",
-        "domains": ["technologyreview.com", "theregister.com", "anthropic.com", "openai.com", "deepmind.google", "techcrunch.com", "arstechnica.com"],
+        "domains": ["technologyreview.com", "theregister.com", "anthropic.com", "openai.com", "deepmind.google", "techcrunch.com"],
     },
     "ti": {
         "label": "TI",
         "focus": "infrastructure, centres de données et capacité, exploitation, plateformes d'entreprise, transport collectif (UITP)",
-        "domains": ["theregister.com", "thenewstack.io", "infoq.com", "lemagit.fr", "arstechnica.com", "uitp.org"],
+        "domains": ["theregister.com", "thenewstack.io", "infoq.com", "lemagit.fr", "uitp.org"],
     },
     "finance": {
         "label": "Finance et politique",
@@ -102,7 +102,19 @@ def ask_topic(tid, cfg):
     tools = [{"type": "web_search_20250305", "name": "web_search", "max_uses": 8, "allowed_domains": cfg["domains"]}]
     text = ""
     for _ in range(4):  # gère pause_turn
-        resp = call_api({"model": MODEL, "max_tokens": 6000, "tools": tools, "messages": messages})
+        try:
+            resp = call_api({"model": MODEL, "max_tokens": 6000, "tools": tools, "messages": messages})
+        except RuntimeError as e:
+            # domaine inaccessible au robot : on le retire de la liste et on réessaie
+            m = re.search(r"not accessible to our user agent: \[([^\]]*)\]", str(e))
+            bad = re.findall(r"'([^']+)'", m.group(1)) if m else []
+            rest = [d for d in tools[0]["allowed_domains"] if d not in bad]
+            if not bad or not rest:
+                raise
+            print(f"[{tid}] domaines retirés (inaccessibles): {bad}")
+            tools[0]["allowed_domains"] = rest
+            cfg = {**cfg, "domains": rest}
+            resp = call_api({"model": MODEL, "max_tokens": 6000, "tools": tools, "messages": messages})
         text = "".join(b.get("text", "") for b in resp.get("content", []) if b.get("type") == "text")
         if resp.get("stop_reason") == "pause_turn":
             messages = [messages[0], {"role": "assistant", "content": resp["content"]}]
@@ -213,9 +225,20 @@ def main():
             continue
         print(f"[{t['id']}] recherche…", flush=True)
         try:
-            raw = ask_topic(t["id"], cfg)
+            raw = None
+            for attempt in (1, 2):  # un 2e essai si la réponse est inutilisable
+                try:
+                    raw = ask_topic(t["id"], cfg)
+                    break
+                except Exception as e1:
+                    print(f"[{t['id']}] essai {attempt} raté : {e1}", flush=True)
+                    if attempt == 2:
+                        raise
+                    time.sleep(10)
             seen, items = set(), []
             for it in raw:
+                if not isinstance(it, dict):
+                    continue
                 v = valid_item(it, cfg["domains"])
                 if v and v["u"] not in seen:
                     seen.add(v["u"])
@@ -233,8 +256,10 @@ def main():
             print(f"[{t['id']}] on garde {len(items)} anciens articles encore récents", flush=True)
         new_items[t["id"]] = items
     total = sum(len(v) for v in new_items.values())
-    if total < MIN_TOTAL_ITEMS or len(failures) >= 3:
-        print(f"Trop peu de résultats ({total} articles, {len(failures)} échecs) : data.json non modifié.", flush=True)
+    if failures:
+        print(f"Rubriques en échec (anciens articles conservés) : {', '.join(failures)}", flush=True)
+    if total < MIN_TOTAL_ITEMS:
+        print(f"Trop peu de résultats ({total} articles) : data.json non modifié.", flush=True)
         sys.exit(1)
     rank(new_items)
     for t in data["topics"]:
