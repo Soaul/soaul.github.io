@@ -63,7 +63,7 @@ Utilise la recherche web pour trouver 6 à 10 articles publiés dans les 7 derni
 - "x" : une phrase en français sur ce que cela change pour un architecte cloud et TI, sans inventer de détail absent de la page.
 - "s" : nom de la source (ex. The Hacker News).
 - "k" : un seul mot ou groupe de mots parmi : {kinds}. N'utilise "Urgent" que pour une faille activement exploitée ou un correctif d'urgence touchant des produits d'entreprise courants.
-- "i" : importance pour un architecte cloud et TI, entier de 1 (mineur) à 5 (à lire absolument).
+- "i" : importance pour un architecte cloud et TI, entier de 1 à 5, barème strict : 5 = faille activement exploitée, panne majeure, loi ou décision réglementaire adoptée, investissement ou acquisition de plus de 1 G$ ; 4 = annonce majeure d'un grand fournisseur (AWS, Microsoft, Google), correctif critique, changement de prix ou de politique important ; 3 = article utile mais courant ; 2 = secondaire ; 1 = anecdotique. Réserve 4 et 5 à au plus 2 articles de la rubrique.
 
 Réponds UNIQUEMENT par un tableau JSON, sans texte autour ni balises de code :
 [{{"t":"...","u":"https://...","s":"...","d":"AAAA-MM-JJ","k":"...","x":"...","i":3}}]"""
@@ -171,17 +171,29 @@ def old_items_still_fresh(items):
 
 def rank(topics_items):
     """Attribue top (à la une, 6 max, 2 par rubrique max) et une (vedette de chaque rubrique)."""
+    for items in topics_items.values():
+        for it in items:
+            if it.get("k") == "Urgent":
+                it["_i"] = 5
+    key = lambda p: (p[1].get("_i", 3), p[1]["d"] if len(p[1]["d"]) == 10 else p[1]["d"] + "-00")
     pool = [(tid, it) for tid, items in topics_items.items() for it in items]
-    pool.sort(key=lambda p: (p[1].get("_i", 3), p[1]["d"] if len(p[1]["d"]) == 10 else p[1]["d"] + "-00"), reverse=True)
-    per, rank_n = {}, 0
+    pool.sort(key=key, reverse=True)
+    # seuls les articles très importants (4-5) vont à la une ; on complète à 3 au minimum
+    chosen, per = [], {}
     for tid, it in pool:
-        if rank_n >= 6:
+        if len(chosen) >= 6:
             break
-        if per.get(tid, 0) >= 2:
-            continue
-        rank_n += 1
-        per[tid] = per.get(tid, 0) + 1
-        it["top"] = rank_n
+        if it.get("_i", 3) >= 4 and per.get(tid, 0) < 2:
+            chosen.append((tid, it)); per[tid] = per.get(tid, 0) + 1
+    if len(chosen) < 3:
+        for tid, it in sorted(pool, key=lambda p: p[1]["d"] if len(p[1]["d"]) == 10 else p[1]["d"] + "-00", reverse=True):
+            if len(chosen) >= 3:
+                break
+            if (tid, it) not in chosen and per.get(tid, 0) < 2:
+                chosen.append((tid, it)); per[tid] = per.get(tid, 0) + 1
+    chosen.sort(key=key, reverse=True)
+    for n, (tid, it) in enumerate(chosen, 1):
+        it["top"] = n
     for tid, items in topics_items.items():
         cands = [it for it in items if "top" not in it] or items
         if cands:
