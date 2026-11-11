@@ -2,9 +2,9 @@ name: EnkiFlux mise à jour
 
 on:
   schedule:
-    # 13 h et 14 h UTC : l'une des deux correspond à 9 h à Montréal selon l'heure d'été.
-    - cron: "0 13 * * 1-5"
-    - cron: "0 14 * * 1-5"
+    # 9 h et 10 h UTC : l'une des deux correspond à 7 h à Montréal selon l'heure d'été.
+    - cron: "0 9 * * 1-5"
+    - cron: "0 10 * * 1-5"
   workflow_dispatch:
 
 permissions:
@@ -20,15 +20,15 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - name: Vérifier qu'il est 9 h à Montréal
+      - name: Vérifier qu'il est 7 h à Montréal
         id: gate
         run: |
           H=$(TZ=America/Toronto date +%H)
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ "$H" = "09" ]; then
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ "$H" = "07" ]; then
             echo "go=true" >> "$GITHUB_OUTPUT"
           else
             echo "go=false" >> "$GITHUB_OUTPUT"
-            echo "Il n'est pas 9 h à Montréal (heure actuelle : $H h), on saute."
+            echo "Il n'est pas 7 h à Montréal (heure actuelle : $H h), on saute."
           fi
 
       - uses: actions/checkout@v4
