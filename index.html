@@ -105,6 +105,11 @@ details.srcs .chips{display:flex;flex-wrap:wrap;gap:4px 18px;padding:10px 0 0}
 details.srcs a{font-size:13.5px;color:var(--soft);border-bottom:1px solid var(--rule-strong)}
 details.srcs a:hover{color:var(--brass);border-color:var(--brass)}
 .empty{padding:20px 0;color:var(--muted)}
+details.arch{margin-top:56px;border-top:3px solid var(--rule-strong);padding-top:8px}
+details.arch summary{cursor:pointer;font-family:var(--f-head);font-weight:700;font-size:24px;letter-spacing:-.01em;color:var(--soft);padding:4px 0;font-variant-numeric:tabular-nums}
+details.arch summary:hover{color:var(--ink)}
+details.arch .note{margin:6px 0 16px;color:var(--faint);font-size:13px}
+.kicker .tp{color:var(--c)}
 footer{margin-top:56px;padding-top:14px;border-top:3px double var(--rule-strong);color:var(--muted);font-size:13px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px}
 footer p{margin:0;max-width:68ch}
 
@@ -148,6 +153,11 @@ footer p{margin:0;max-width:68ch}
 </div>
 
 <main id="main"></main>
+<details class="arch" id="arch" hidden>
+  <summary id="archsum">Archives</summary>
+  <p class="note">Articles sortis de la sélection du jour (plus de 10 jours, ou remplacés par une collecte plus récente), du plus récent au moins récent.</p>
+  <div class="briefs" id="archlist"></div>
+</details>
 <p class="empty" id="none" hidden>Aucun article ne correspond. Efface la recherche ou désactive « Masquer les lus ».</p>
 
 <footer>
@@ -200,13 +210,14 @@ function lead(it, tp, cls, tag, ht){
   if(it.x) a.append(el("p",null,it.x));
   a.append(byline(it)); return a;
 }
-function brief(it, tp){
+function brief(it, tp, withTopic){
   const a = el("a","brief"); track(a, it);
   const w = whenText(it.d), wn = el("div","when");
   wn.append(document.createTextNode(w.rel)); if(it.d.length === 10) wn.append(el("span","abs",w.abs)); if(w.fresh) wn.style.color = "var(--brass)";
   const b = el("div"); b.append(el("h4",null,it.t));
   if(it.x) b.append(el("p",null,it.x));
   const meta = el("div","kicker"); meta.style.setProperty("--c","var(--muted)");
+  if(withTopic){ const t = el("span","tp",tp.label); t.style.setProperty("--c", `var(${tp.color})`); meta.append(t); }
   if(it.k) meta.append(el("span","k" + (it.k === "Urgent" ? " urgent" : ""), it.k));
   meta.append(el("span","byline",it.s)); b.append(meta);
   a.append(wn, b); return a;
@@ -214,6 +225,27 @@ function brief(it, tp){
 function matches(it){
   const q = query.trim().toLowerCase();
   return (!q || (it.t+" "+(it.x||"")+" "+it.s+" "+(it.k||"")).toLowerCase().includes(q)) && (!hideRead || !read.has(it.u));
+}
+// Archives : articles sortis de "items". On ignore ceux revenus dans la sélection du jour.
+function archived(scope){
+  const live = new Set(DATA.topics.flatMap(t => t.items.map(i => i.u)));
+  const seen = new Set();
+  return scope.flatMap(tp => (tp.archive || []).map(i => ({i, tp})))
+    .filter(x => !live.has(x.i.u) && !seen.has(x.i.u) && seen.add(x.i.u))
+    .sort((a,b) => sortKey(b.i.d).localeCompare(sortKey(a.i.d)));
+}
+let archAuto = false;
+function renderArchive(scope){
+  const box = $("#arch"), list = $("#archlist"), q = query.trim();
+  const all = archived(scope), items = all.filter(x => matches(x.i));
+  box.hidden = !all.length || (!items.length && (q || hideRead));
+  $("#archsum").textContent = "Archives (" + items.length + ")";
+  // une recherche active ouvre la section ; on la referme si c'est la recherche qui l'avait ouverte
+  if(q && items.length && !box.open){ box.open = true; archAuto = true; }
+  else if(!q && archAuto){ box.open = false; archAuto = false; }
+  list.textContent = "";
+  if(box.open) items.forEach(x => list.append(brief(x.i, x.tp, true)));  // construit seulement si ouvert
+  return items.length;
 }
 function updateCounts(){
   let total = 0, unread = 0;
@@ -265,6 +297,7 @@ function render(){
     tp.sources.forEach(s => { const l = el("a",null,s.t); l.href = s.u; l.target = "_blank"; l.rel = "noopener noreferrer"; ch.append(l); });
     d.append(ch); sec.append(d); main.append(sec);
   });
+  shown += renderArchive(scope);
   $("#none").hidden = !!shown;
   updateCounts();
 }
@@ -281,6 +314,10 @@ function tabs(){
     box.append(b);
   });
 }
+$("#arch").addEventListener("toggle", () => {
+  if(!$("#arch").open) archAuto = false;
+  if($("#arch").open && !$("#archlist").childElementCount) renderArchive(DATA.topics.filter(t => active === "all" || t.id === active));
+});
 $("#q").addEventListener("input", e => { query = e.target.value; render(); });
 $("#hide").addEventListener("click", e => { hideRead = !hideRead; e.currentTarget.setAttribute("aria-pressed", String(hideRead)); render(); });
 $("#markall").addEventListener("click", () => { DATA.topics.forEach(t => t.items.forEach(i => read.add(i.u))); saveRead(); render(); });
