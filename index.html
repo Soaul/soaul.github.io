@@ -167,7 +167,7 @@ footer p{margin:0;max-width:68ch}
 </div>
 
 <script>
-let DATA = null;
+let DATA = null, ARCH = {};  // ARCH : archive.json, chargé en arrière-plan après la page
 
 const $ = s => document.querySelector(s);
 const MOIS = ["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."];
@@ -226,11 +226,11 @@ function matches(it){
   const q = query.trim().toLowerCase();
   return (!q || (it.t+" "+(it.x||"")+" "+it.s+" "+(it.k||"")).toLowerCase().includes(q)) && (!hideRead || !read.has(it.u));
 }
-// Archives : articles sortis de "items". On ignore ceux revenus dans la sélection du jour.
+// Archives (archive.json) : articles sortis de "items". On ignore ceux revenus dans la sélection du jour.
 function archived(scope){
   const live = new Set(DATA.topics.flatMap(t => t.items.map(i => i.u)));
   const seen = new Set();
-  return scope.flatMap(tp => (tp.archive || []).map(i => ({i, tp})))
+  return scope.flatMap(tp => (ARCH[tp.id] || []).map(i => ({i, tp})))
     .filter(x => !live.has(x.i.u) && !seen.has(x.i.u) && seen.add(x.i.u))
     .sort((a,b) => sortKey(b.i.d).localeCompare(sortKey(a.i.d)));
 }
@@ -327,6 +327,7 @@ $("#edition").textContent = jour.charAt(0).toUpperCase() + jour.slice(1);
 const [uy,um,ud] = DATA.updated.split("-").map(Number);
 $("#upd").textContent = "Dernière collecte : " + ud + " " + MOIS[um-1] + " " + uy;
 tabs(); render();
+fetch("archive.json",{cache:"no-store"}).then(r => r.ok ? r.json() : {}).then(a => { ARCH = (a && a.topics) || {}; render(); }).catch(() => {});
 }
 fetch("data.json",{cache:"no-store"}).then(r => r.json()).then(d => { DATA = d; start(); }).catch(() => { const n = document.querySelector("#none"); n.textContent = "Impossible de charger data.json."; n.hidden = false; });
 </script>
