@@ -2,9 +2,9 @@ name: EnkiFlux mise à jour
 
 on:
   schedule:
-    # 9 h et 10 h UTC : l'une des deux correspond à 7 h à Montréal selon l'heure d'été.
-    - cron: "0 9 * * 1-5"
-    - cron: "0 10 * * 1-5"
+    # 7 h à Montréal, du lundi au vendredi
+    - cron: "0 11 * * 1-5" # 7 h en heure d'été
+    - cron: "0 12 * * 1-5" # 7 h en heure d'hiver
   workflow_dispatch:
 
 permissions:
